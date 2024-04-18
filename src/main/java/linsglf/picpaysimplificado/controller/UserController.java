@@ -27,13 +27,11 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserDTO userDTO) {
         if (userDTO.userType().equals(UserType.COMMON)) {
-            User user = userAssembler.toEntityCommon(userDTO);
-            userService.createUser(user);
+            userService.createUser(userDTO);
             return ResponseEntity.created(null).body(userAssembler.toResponse(userDTO));
         }
         if (userDTO.userType().equals(UserType.MERCHANT)) {
-            UserMerchant userMerchant = userAssembler.toEntityMerchant(userDTO);
-            userService.createUserMerchant(userMerchant);
+            userService.createUserMerchant(userDTO);
             return ResponseEntity.created(null).body(userAssembler.toResponse(userDTO));
         }
         return ResponseEntity.badRequest().build();

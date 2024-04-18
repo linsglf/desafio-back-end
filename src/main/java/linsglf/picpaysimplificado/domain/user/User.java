@@ -27,6 +27,8 @@ public class User {
     private UserType type;
     private BigDecimal balance;
 
+
+
     public User(UserDTO userDTO) {
         this.name = userDTO.name();
         this.cpf = userDTO.cpf();
