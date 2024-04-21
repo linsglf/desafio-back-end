@@ -1,10 +1,12 @@
 package linsglf.picpaysimplificado.domain.user;
 
 import jakarta.persistence.*;
+import linsglf.picpaysimplificado.domain.key.PaymentKey;
 import linsglf.picpaysimplificado.domain.user.dto.UserDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity(name = "users")
 @Table(name = "users")
@@ -26,8 +28,10 @@ public class User {
     private String password;
     private UserType type;
     private BigDecimal balance;
+    private boolean isActive;
 
-
+    @OneToMany(mappedBy = "user")
+    private List<PaymentKey> PaymentKeys;
 
     public User(UserDTO userDTO) {
         this.name = userDTO.name();

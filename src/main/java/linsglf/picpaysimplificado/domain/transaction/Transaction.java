@@ -1,6 +1,7 @@
 package linsglf.picpaysimplificado.domain.transaction;
 
 import jakarta.persistence.*;
+import linsglf.picpaysimplificado.domain.key.PaymentKey;
 import linsglf.picpaysimplificado.domain.user.User;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "payer_id")
-    private User payerId;
+    private PaymentKey payerId;
 
     @ManyToOne
     @JoinColumn(name = "payee_id")

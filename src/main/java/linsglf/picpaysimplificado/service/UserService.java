@@ -1,9 +1,10 @@
 package linsglf.picpaysimplificado.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import linsglf.picpaysimplificado.assembler.UserAssembler;
+import linsglf.picpaysimplificado.domain.response.UserResponse;
 import linsglf.picpaysimplificado.domain.user.User;
 import linsglf.picpaysimplificado.domain.user.UserMerchant;
-import linsglf.picpaysimplificado.domain.user.UserType;
 import linsglf.picpaysimplificado.domain.user.dto.UserDTO;
 import linsglf.picpaysimplificado.repository.UserMerchantRepository;
 import linsglf.picpaysimplificado.repository.UserRepository;
@@ -44,5 +45,37 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + id));
+        return userAssembler.toDTO(user);
+    }
+
+    @Transactional
+    public void updateUser(Long id, UserDTO userDTO) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + id));
+        userAssembler.toEntityCommon(userDTO);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void updateUserMerchant(Long id, UserDTO userDTO) {
+        UserMerchant userMerchant = userMerchantRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found: " + id));
+        userAssembler.toEntityMerchant(userDTO);
+        userMerchantRepository.save(userMerchant);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        userRepository.logicalDeleteById(id);
+    }
+
+    @Transactional
+    public void activateUser(Long id) {
+        userRepository.logicalActivateById(id);
     }
 }
